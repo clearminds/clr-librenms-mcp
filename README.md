@@ -1,6 +1,6 @@
-# librenms-mcp-server
+# clr-librenms-mcp
 
-[![PyPI](https://img.shields.io/pypi/v/librenms-mcp-server)](https://pypi.org/project/librenms-mcp-server/)
+[![PyPI](https://img.shields.io/pypi/v/clr-librenms-mcp)](https://pypi.org/project/clr-librenms-mcp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 
@@ -20,9 +20,9 @@ MCP server for LibreNMS network monitoring — query devices, alerts, sensors, p
 ## Installation
 
 ```bash
-pip install librenms-mcp-server
+pip install clr-librenms-mcp
 # or
-uvx librenms-mcp-server
+uvx clr-librenms-mcp
 ```
 
 ## Configuration
@@ -59,7 +59,7 @@ Add to your `claude_desktop_config.json`:
   "mcpServers": {
     "librenms": {
       "command": "uvx",
-      "args": ["librenms-mcp-server"]
+      "args": ["clr-librenms-mcp"]
     }
   }
 }
@@ -70,7 +70,7 @@ Add to your `claude_desktop_config.json`:
 Add via CLI:
 
 ```bash
-claude mcp add librenms -- uvx librenms-mcp-server
+claude mcp add librenms -- uvx clr-librenms-mcp
 ```
 
 Or add to your `.mcp.json`:
@@ -79,7 +79,7 @@ Or add to your `.mcp.json`:
 {
   "librenms": {
     "command": "uvx",
-    "args": ["librenms-mcp-server"]
+    "args": ["clr-librenms-mcp"]
   }
 }
 ```
@@ -94,7 +94,7 @@ Add to your VS Code settings or `.vscode/mcp.json`:
     "servers": {
       "librenms": {
         "command": "uvx",
-        "args": ["librenms-mcp-server"]
+        "args": ["clr-librenms-mcp"]
       }
     }
   }
@@ -108,7 +108,7 @@ Add to your VS Code settings or `.vscode/mcp.json`:
 To run as a standalone HTTP server:
 
 ```bash
-librenms-mcp-server --transport http --host 0.0.0.0 --port 8000
+clr-librenms-mcp --transport http --host 0.0.0.0 --port 8000
 ```
 
 ## Tools
@@ -200,10 +200,10 @@ All tools are **read-only** except `librenms_ack_alert`, which is a non-destruct
 ## Development
 
 ```bash
-git clone https://github.com/clearminds/librenms-mcp-server.git
-cd librenms-mcp-server
+git clone https://github.com/clearminds/clr-librenms-mcp.git
+cd clr-librenms-mcp
 uv sync
-uv run librenms-mcp-server
+uv run clr-librenms-mcp
 ```
 
 ## License

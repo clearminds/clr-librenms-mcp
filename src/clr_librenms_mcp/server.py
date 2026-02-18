@@ -9,8 +9,8 @@ from typing import Any
 
 from fastmcp import FastMCP
 
-from librenms_mcp_server.config import Settings
-from librenms_mcp_server.librenms_client import LibreNMSClient
+from clr_librenms_mcp.config import Settings
+from clr_librenms_mcp.librenms_client import LibreNMSClient
 
 mcp = FastMCP("LibreNMS")
 _client: LibreNMSClient | None = None

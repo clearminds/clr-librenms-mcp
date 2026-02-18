@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "librenms-mcp-server"
+name = "clr-librenms-mcp"
 version = "1.0.0"
 description = "MCP server for LibreNMS network monitoring"
 readme = "README.md"
@@ -28,9 +28,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/clearminds/librenms-mcp-server"
-Repository = "https://github.com/clearminds/librenms-mcp-server"
-Issues = "https://github.com/clearminds/librenms-mcp-server/issues"
+Homepage = "https://github.com/clearminds/clr-librenms-mcp"
+Repository = "https://github.com/clearminds/clr-librenms-mcp"
+Issues = "https://github.com/clearminds/clr-librenms-mcp/issues"
 
 [project.scripts]
-librenms-mcp-server = "librenms_mcp_server.server:main"
+clr-librenms-mcp = "clr_librenms_mcp.server:main"
