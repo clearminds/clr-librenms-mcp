@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "librenms-mcp-server"
+version = "1.0.0"
+description = "MCP server for LibreNMS network monitoring"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "Clearminds AB"}]
+keywords = ["mcp", "librenms", "monitoring", "snmp", "network", "model-context-protocol"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: System :: Monitoring",
+    "Topic :: System :: Networking :: Monitoring",
+]
+dependencies = [
+    "httpx>=0.28.1",
+    "fastmcp>=2.14.0,<3",
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/clearminds/librenms-mcp-server"
+Repository = "https://github.com/clearminds/librenms-mcp-server"
+Issues = "https://github.com/clearminds/librenms-mcp-server/issues"
+
+[project.scripts]
+librenms-mcp-server = "librenms_mcp_server.server:main"
