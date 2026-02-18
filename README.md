@@ -27,7 +27,16 @@ uvx librenms-mcp-server
 
 ## Configuration
 
-The server requires two environment variables:
+**Preferred:** Configuration file at `~/.config/librenms/credentials.json` (chmod 600):
+
+```json
+{
+  "url": "https://librenms.example.com",
+  "token": "your-api-token"
+}
+```
+
+**Alternative:** Environment variables are also supported:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
@@ -50,11 +59,7 @@ Add to your `claude_desktop_config.json`:
   "mcpServers": {
     "librenms": {
       "command": "uvx",
-      "args": ["librenms-mcp-server"],
-      "env": {
-        "LIBRENMS_URL": "https://librenms.example.com",
-        "LIBRENMS_TOKEN": "your-api-token"
-      }
+      "args": ["librenms-mcp-server"]
     }
   }
 }
@@ -74,11 +79,7 @@ Or add to your `.mcp.json`:
 {
   "librenms": {
     "command": "uvx",
-    "args": ["librenms-mcp-server"],
-    "env": {
-      "LIBRENMS_URL": "https://librenms.example.com",
-      "LIBRENMS_TOKEN": "your-api-token"
-    }
+    "args": ["librenms-mcp-server"]
   }
 }
 ```
@@ -93,16 +94,14 @@ Add to your VS Code settings or `.vscode/mcp.json`:
     "servers": {
       "librenms": {
         "command": "uvx",
-        "args": ["librenms-mcp-server"],
-        "env": {
-          "LIBRENMS_URL": "https://librenms.example.com",
-          "LIBRENMS_TOKEN": "your-api-token"
-        }
+        "args": ["librenms-mcp-server"]
       }
     }
   }
 }
 ```
+
+**Note:** Configuration is read from `~/.config/librenms/credentials.json` or environment variables. No need to specify credentials in MCP config files.
 
 ### HTTP Transport
 
