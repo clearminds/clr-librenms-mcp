@@ -31,7 +31,7 @@ class LibreNMSClient:
         info = resp.json()
         logger.info(
             "Connected to LibreNMS %s",
-            info.get("system", {}).get("local_ver", "unknown"),
+            info.get("system", [{}])[0].get("local_ver", "unknown"),
         )
 
     def close(self) -> None:
