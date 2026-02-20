@@ -23,7 +23,8 @@ _client: LibreNMSClient | None = None
 def librenms_system() -> dict[str, Any]:
     """Get LibreNMS system information.
 
-    Returns version, database schema, PHP version, and other system details.
+    Returns:
+        Version, database schema, PHP version, and other system details.
     """
     data = _client.get("/api/v0/system")
     return data.get("system", data)
@@ -44,8 +45,9 @@ def librenms_list_devices(
                      hostname, sysName, location, or None for all.
         query: Search value when using device_type filter.
 
-    Returns list of devices with hostname, sysName, hardware, os, status,
-    uptime, and location.
+    Returns:
+        List of devices with hostname, sysName, hardware, os, status,
+        uptime, and location.
     """
     params = {}
     if device_type:
@@ -78,7 +80,8 @@ def librenms_get_device(device: str) -> dict[str, Any]:
     Args:
         device: Hostname, IP address, or device_id.
 
-    Returns complete device information.
+    Returns:
+        Complete device information.
     """
     data = _client.get(f"/api/v0/devices/{device}")
     devices = data.get("devices", [])
@@ -92,7 +95,8 @@ def librenms_device_availability(device: str) -> list[dict[str, Any]]:
     Args:
         device: Hostname, IP address, or device_id.
 
-    Returns availability data for 24h, 7d, 30d, and 365d periods.
+    Returns:
+        Availability data for 24h, 7d, 30d, and 365d periods.
     """
     data = _client.get(f"/api/v0/devices/{device}/availability")
     return data.get("availability", [])
@@ -105,7 +109,8 @@ def librenms_device_outages(device: str) -> list[dict[str, Any]]:
     Args:
         device: Hostname, IP address, or device_id.
 
-    Returns list of outages with going_down and up_again timestamps.
+    Returns:
+        List of outages with going_down and up_again timestamps.
     """
     data = _client.get(f"/api/v0/devices/{device}/outages")
     return data.get("outages", [])
@@ -115,7 +120,8 @@ def librenms_device_outages(device: str) -> list[dict[str, Any]]:
 def librenms_down_devices() -> list[dict[str, Any]]:
     """List all devices that are currently down.
 
-    Returns only devices with status 0 (down), including the reason.
+    Returns:
+        Only devices with status 0 (down), including the reason.
     """
     data = _client.get("/api/v0/devices", params={"type": "down"})
     rows = data.get("devices", [])
@@ -136,7 +142,8 @@ def librenms_down_devices() -> list[dict[str, Any]]:
 def librenms_device_summary() -> dict[str, Any]:
     """Get aggregate device status summary — count by status.
 
-    Returns total device count, how many are up, down, and disabled.
+    Returns:
+        Total device count, how many are up, down, and disabled.
     """
     data = _client.get("/api/v0/devices")
     rows = data.get("devices", [])
@@ -170,8 +177,9 @@ def librenms_list_alerts(
         state: Filter by state — active, acknowledged, or resolved.
         severity: Filter by severity — ok, warning, critical.
 
-    Returns list of alerts with id, hostname, rule name, severity,
-    state, and timestamp.
+    Returns:
+        List of alerts with id, hostname, rule name, severity,
+        state, and timestamp.
     """
     params = {}
     state_map = {"active": "1", "acknowledged": "2", "resolved": "0"}
@@ -202,7 +210,8 @@ def librenms_get_alert(alert_id: int) -> dict[str, Any]:
     Args:
         alert_id: The LibreNMS alert ID.
 
-    Returns complete alert information.
+    Returns:
+        Complete alert information.
     """
     data = _client.get(f"/api/v0/alerts/{alert_id}")
     alerts = data.get("alerts", [])
@@ -213,8 +222,9 @@ def librenms_get_alert(alert_id: int) -> dict[str, Any]:
 def librenms_alert_count() -> dict[str, Any]:
     """Get alert count aggregated by state and severity.
 
-    Returns total count and breakdown by state (active, acknowledged,
-    resolved) and severity (ok, warning, critical).
+    Returns:
+        Total count and breakdown by state (active, acknowledged,
+        resolved) and severity (ok, warning, critical).
     """
     data = _client.get("/api/v0/alerts")
     rows = data.get("alerts", [])
@@ -247,7 +257,8 @@ def librenms_ack_alert(alert_id: int, note: str = "") -> dict[str, Any]:
         alert_id: The alert ID to acknowledge.
         note: Optional note to attach.
 
-    Returns acknowledgement result.
+    Returns:
+        Acknowledgement result with alert_id on success, or error detail.
     """
     payload = {"note": note, "until_clear": True}
     status_code, body = _client.put(f"/api/v0/alerts/{alert_id}", payload)
@@ -263,8 +274,9 @@ def librenms_ack_alert(alert_id: int, note: str = "") -> dict[str, Any]:
 def librenms_list_alert_rules() -> list[dict[str, Any]]:
     """List all alert rules.
 
-    Returns list of alert rules with id, name, severity, and whether
-    they are enabled or disabled.
+    Returns:
+        List of alert rules with id, name, severity, and whether
+        they are enabled or disabled.
     """
     data = _client.get("/api/v0/rules")
     rows = data.get("rules", [])
@@ -289,8 +301,9 @@ def librenms_list_sensors(device: str | None = None) -> list[dict[str, Any]]:
     Args:
         device: Optional hostname, IP, or device_id to filter by.
 
-    Returns list of sensors with id, class, description, current value,
-    and threshold limits.
+    Returns:
+        List of sensors with id, class, description, current value,
+        and threshold limits.
     """
     if device:
         data = _client.get(f"/api/v0/devices/{device}/health")
@@ -324,7 +337,8 @@ def librenms_device_health(
         health_type: Optional sensor type filter (e.g. temperature,
                      voltage, fanspeed, power, humidity, state).
 
-    Returns list of health sensor data.
+    Returns:
+        List of health sensor data.
     """
     path = f"/api/v0/devices/{device}/health"
     if health_type:
@@ -344,7 +358,8 @@ def librenms_list_ports(device: str) -> list[dict[str, Any]]:
     Args:
         device: Hostname, IP address, or device_id.
 
-    Returns list of ports with name, speed, status, alias, and traffic.
+    Returns:
+        List of ports with name, speed, status, alias, and traffic.
     """
     data = _client.get(f"/api/v0/devices/{device}/ports")
     rows = data.get("ports", [])
@@ -369,7 +384,8 @@ def librenms_search_ports(search: str) -> list[dict[str, Any]]:
     Args:
         search: Search string to match against port fields.
 
-    Returns list of matching ports.
+    Returns:
+        List of matching ports.
     """
     data = _client.get(f"/api/v0/ports/search/{search}")
     rows = data.get("ports", [])
@@ -392,7 +408,8 @@ def librenms_port_by_mac(mac: str) -> list[dict[str, Any]]:
     Args:
         mac: MAC address to search for.
 
-    Returns list of matching ports with device context.
+    Returns:
+        List of matching ports with device context.
     """
     data = _client.get(f"/api/v0/ports/mac/{mac}")
     return data.get("ports", [])
@@ -412,7 +429,8 @@ def librenms_arp_lookup(
                or "all" (requires device parameter).
         device: Required when query is "all" — hostname or device_id.
 
-    Returns list of ARP entries with MAC, IP, port, and device info.
+    Returns:
+        List of ARP entries with MAC, IP, port, and device info.
     """
     params = {}
     if device:
@@ -434,7 +452,8 @@ def librenms_fdb(device: str) -> list[dict[str, Any]]:
     Args:
         device: Hostname, IP address, or device_id.
 
-    Returns list of FDB entries with MAC address, VLAN, and port.
+    Returns:
+        List of FDB entries with MAC address, VLAN, and port.
     """
     data = _client.get(f"/api/v0/devices/{device}/fdb")
     rows = data.get("ports_fdb", [])
@@ -463,8 +482,9 @@ def librenms_inventory(
         physical_class: Optional filter — chassis, module, port,
                         powerSupply, fan, sensor, etc.
 
-    Returns list of inventory entries with description, class, name,
-    and serial number.
+    Returns:
+        List of inventory entries with description, class, name,
+        and serial number.
     """
     params = {}
     if physical_class:
@@ -496,7 +516,8 @@ def librenms_device_ips(device: str) -> list[dict[str, Any]]:
     Args:
         device: Hostname, IP address, or device_id.
 
-    Returns list of IP addresses with prefix length and port.
+    Returns:
+        List of IP addresses with prefix length and port.
     """
     data = _client.get(f"/api/v0/devices/{device}/ip")
     return data.get("addresses", [])

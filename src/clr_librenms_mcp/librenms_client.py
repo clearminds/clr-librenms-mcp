@@ -13,6 +13,10 @@ class LibreNMSClient:
 
     Uses X-Auth-Token header for all requests.
     Handles pagination via count/offset when needed.
+
+    Attributes:
+        base_url: Base URL of the LibreNMS instance (trailing slash stripped).
+        token: API authentication token.
     """
 
     def __init__(self, url: str, token: str) -> None:
@@ -41,20 +45,33 @@ class LibreNMSClient:
     def get(
         self, path: str, params: dict[str, str] | None = None
     ) -> dict[str, Any]:
-        """GET request to LibreNMS API.
+        """Send a GET request to the LibreNMS API.
 
         Args:
             path: API path (e.g. "/api/v0/devices").
             params: Optional query parameters.
 
-        Returns the parsed JSON response body.
+        Returns:
+            The parsed JSON response body.
+
+        Raises:
+            httpx.HTTPStatusError: If the response status code indicates an error.
         """
         resp = self._http.get(path, params=params)
         resp.raise_for_status()
         return resp.json()
 
     def put(self, path: str, data: Any = None) -> tuple[int, Any]:
-        """PUT request. Returns (status_code, response_body)."""
+        """Send a PUT request to the LibreNMS API.
+
+        Args:
+            path: API path (e.g. "/api/v0/alerts/42").
+            data: Optional JSON-serializable payload.
+
+        Returns:
+            A tuple of (status_code, response_body) where response_body is
+            parsed JSON or raw text on decode failure.
+        """
         resp = self._http.put(path, json=data or {})
         try:
             body = resp.json()

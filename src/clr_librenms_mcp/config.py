@@ -18,6 +18,12 @@ class Settings(BaseSettings):
     Priority order:
     1. ~/.config/librenms/credentials.json
     2. Environment variables (LIBRENMS_URL, LIBRENMS_TOKEN) - override
+
+    Attributes:
+        librenms_url: Base URL of the LibreNMS instance.
+        librenms_token: API token for LibreNMS authentication.
+        librenms_transport: MCP transport mode (stdio or http).
+        librenms_log_level: Logging level name.
     """
 
     librenms_url: str = ""
