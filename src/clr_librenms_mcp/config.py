@@ -30,6 +30,7 @@ class Settings(BaseSettings):
     librenms_token: str = ""
     librenms_transport: str = "stdio"
     librenms_log_level: str = "INFO"
+    librenms_read_only: bool = False
 
     model_config = {"env_prefix": ""}
 

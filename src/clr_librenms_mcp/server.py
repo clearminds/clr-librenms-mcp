@@ -15,6 +15,8 @@ from clr_librenms_mcp.librenms_client import LibreNMSClient
 mcp = FastMCP("LibreNMS")
 _client: LibreNMSClient | None = None
 
+WRITE_TOOLS = ["librenms_ack_alert"]
+
 
 # ── System tools ─────────────────────────────────────────────────────
 
@@ -546,6 +548,12 @@ def main() -> None:
     )
     parser.add_argument("--librenms-url", type=str, default=None)
     parser.add_argument("--librenms-token", type=str, default=None)
+    parser.add_argument(
+        "--read-only",
+        action="store_true",
+        default=None,
+        help="Run in read-only mode (hide write tools)",
+    )
     args = parser.parse_args()
 
     creds = settings.load_credentials()
@@ -584,6 +592,12 @@ def main() -> None:
 
     logger.info("Connecting to LibreNMS at %s", librenms_url)
     _client = LibreNMSClient(librenms_url, librenms_token)
+
+    read_only = args.read_only if args.read_only is not None else settings.librenms_read_only
+    if read_only and WRITE_TOOLS:
+        for name in WRITE_TOOLS:
+            mcp.remove_tool(name)
+        logger.info("Read-only mode: %d write tools removed", len(WRITE_TOOLS))
 
     try:
         if transport == "stdio":
