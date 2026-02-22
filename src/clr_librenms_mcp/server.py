@@ -11,8 +11,10 @@ from fastmcp import FastMCP
 
 from clr_librenms_mcp.config import Settings
 from clr_librenms_mcp.librenms_client import LibreNMSClient
+from clr_librenms_mcp.middleware import ToolValidationMiddleware
 
 mcp = FastMCP("LibreNMS")
+mcp.add_middleware(ToolValidationMiddleware())
 _client: LibreNMSClient | None = None
 
 WRITE_TOOLS = ["librenms_ack_alert"]
