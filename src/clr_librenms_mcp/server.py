@@ -172,12 +172,16 @@ def librenms_device_summary() -> dict[str, Any]:
 def librenms_list_alerts(
     state: str | None = None,
     severity: str | None = None,
+    alert_rule: int | None = None,
+    order: str | None = None,
 ) -> list[dict[str, Any]]:
     """List alerts with optional filters.
 
     Args:
         state: Filter by state — active, acknowledged, or resolved.
         severity: Filter by severity — ok, warning, critical.
+        alert_rule: Filter by alert rule ID.
+        order: Sort order, e.g. "timestamp DESC" or "timestamp ASC".
 
     Returns:
         List of alerts with id, hostname, rule name, severity,
@@ -189,6 +193,10 @@ def librenms_list_alerts(
         params["state"] = state_map[state.lower()]
     if severity:
         params["severity"] = severity.lower()
+    if alert_rule is not None:
+        params["alert_rule"] = str(alert_rule)
+    if order:
+        params["order"] = order
 
     data = _client.get("/api/v0/alerts", params=params or None)
     rows = data.get("alerts", [])
@@ -290,6 +298,54 @@ def librenms_list_alert_rules() -> list[dict[str, Any]]:
             "disabled": r.get("disabled"),
         }
         for r in rows
+    ]
+
+
+# ── Alert log tools ──────────────────────────────────────────────────
+
+
+@mcp.tool
+def librenms_alert_log(
+    device: str,
+    start_time: str | None = None,
+    end_time: str | None = None,
+    limit: int = 50,
+) -> list[dict[str, Any]]:
+    """Get historical alert log entries for a device.
+
+    Returns past alert events including alerts that have since resolved,
+    useful for reviewing alert history over a time range.
+
+    Args:
+        device: Hostname, IP address, or device_id.
+        start_time: Start of time range in "YYYY-MM-DD HH:MM:SS" format.
+        end_time: End of time range in "YYYY-MM-DD HH:MM:SS" format.
+        limit: Maximum number of entries to return (default 50).
+
+    Returns:
+        List of alert log entries with id, rule, hostname, state,
+        time_logged, and details.
+    """
+    params = {"limit": str(limit)}
+    if start_time:
+        params["from"] = start_time.replace("-", "").replace(":", "").replace(" ", "")
+    if end_time:
+        params["to"] = end_time.replace("-", "").replace(":", "").replace(" ", "")
+
+    data = _client.get(
+        f"/api/v0/logs/alertlog/{device}", params=params
+    )
+    rows = data.get("logs", [])
+    return [
+        {
+            "id": entry.get("id"),
+            "rule": entry.get("name", ""),
+            "hostname": entry.get("hostname", ""),
+            "state": entry.get("state"),
+            "time_logged": entry.get("time_logged"),
+            "details": entry.get("details", ""),
+        }
+        for entry in rows
     ]
 
 
