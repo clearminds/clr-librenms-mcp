@@ -47,6 +47,7 @@ Optional:
 
 | Variable | Description | Default |
 |----------|-------------|---------|
+| `LIBRENMS_READ_ONLY` | Run in read-only mode | `false` |
 | `LIBRENMS_TRANSPORT` | Transport protocol (`stdio` or `http`) | `stdio` |
 | `LIBRENMS_LOG_LEVEL` | Log level | `INFO` |
 
