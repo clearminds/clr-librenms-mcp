@@ -31,7 +31,10 @@ def librenms_system() -> dict[str, Any]:
         Version, database schema, PHP version, and other system details.
     """
     data = _client.get("/api/v0/system")
-    return data.get("system", data)
+    system = data.get("system", data)
+    if isinstance(system, list) and len(system) == 1:
+        return system[0]
+    return {"system": system}
 
 
 # ── Device tools ─────────────────────────────────────────────────────
