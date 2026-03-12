@@ -586,6 +586,28 @@ def librenms_device_ips(device: str) -> list[dict[str, Any]]:
     return data.get("addresses", [])
 
 
+# ── Composite init ───────────────────────────────────────────────────
+
+
+def init_composite() -> FastMCP:
+    """Initialize for composite mounting. Returns the FastMCP instance."""
+    global _client
+
+    settings = Settings()
+    creds = settings.load_credentials()
+
+    librenms_url = creds.get("url", "")
+    librenms_token = creds.get("token", "")
+
+    _client = LibreNMSClient(librenms_url, librenms_token)
+
+    if settings.librenms_read_only and WRITE_TOOLS:
+        for name in WRITE_TOOLS:
+            mcp.remove_tool(name)
+
+    return mcp
+
+
 # ── Main entry point ─────────────────────────────────────────────────
 
 
