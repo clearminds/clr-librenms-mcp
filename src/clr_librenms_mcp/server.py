@@ -17,13 +17,16 @@ mcp = FastMCP("LibreNMS")
 mcp.add_middleware(ToolValidationMiddleware())
 _client: LibreNMSClient | None = None
 
-WRITE_TOOLS = ["librenms_ack_alert"]
+# Imported here (not at the top) on purpose: annotations.py needs ``mcp`` from
+# this module, so importing it before the ``mcp = FastMCP(...)`` line above
+# would be a circular import. Do not move.
+from clr_librenms_mcp.annotations import read_tool, remove_non_read_tools, write_tool  # noqa: E402
 
 
 # ── System tools ─────────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def librenms_system() -> dict[str, Any]:
     """Get LibreNMS system information.
 
@@ -40,7 +43,7 @@ def librenms_system() -> dict[str, Any]:
 # ── Device tools ─────────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def librenms_list_devices(
     device_type: str | None = None,
     query: str | None = None,
@@ -80,7 +83,7 @@ def librenms_list_devices(
     ]
 
 
-@mcp.tool
+@read_tool
 def librenms_get_device(device: str) -> dict[str, Any]:
     """Get full detail for a single device.
 
@@ -95,7 +98,7 @@ def librenms_get_device(device: str) -> dict[str, Any]:
     return devices[0] if devices else data
 
 
-@mcp.tool
+@read_tool
 def librenms_device_availability(device: str) -> list[dict[str, Any]]:
     """Get device availability percentages.
 
@@ -109,7 +112,7 @@ def librenms_device_availability(device: str) -> list[dict[str, Any]]:
     return data.get("availability", [])
 
 
-@mcp.tool
+@read_tool
 def librenms_device_outages(device: str) -> list[dict[str, Any]]:
     """Get device outage history.
 
@@ -123,7 +126,7 @@ def librenms_device_outages(device: str) -> list[dict[str, Any]]:
     return data.get("outages", [])
 
 
-@mcp.tool
+@read_tool
 def librenms_down_devices() -> list[dict[str, Any]]:
     """List all devices that are currently down.
 
@@ -145,7 +148,7 @@ def librenms_down_devices() -> list[dict[str, Any]]:
     ]
 
 
-@mcp.tool
+@read_tool
 def librenms_device_summary() -> dict[str, Any]:
     """Get aggregate device status summary — count by status.
 
@@ -173,7 +176,7 @@ def librenms_device_summary() -> dict[str, Any]:
 # ── Alert tools ──────────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def librenms_list_alerts(
     state: str | None = None,
     severity: str | None = None,
@@ -218,7 +221,7 @@ def librenms_list_alerts(
     ]
 
 
-@mcp.tool
+@read_tool
 def librenms_get_alert(alert_id: int) -> dict[str, Any]:
     """Get full detail for a single alert.
 
@@ -233,7 +236,7 @@ def librenms_get_alert(alert_id: int) -> dict[str, Any]:
     return alerts[0] if alerts else data
 
 
-@mcp.tool
+@read_tool
 def librenms_alert_count() -> dict[str, Any]:
     """Get alert count aggregated by state and severity.
 
@@ -261,7 +264,7 @@ def librenms_alert_count() -> dict[str, Any]:
     }
 
 
-@mcp.tool
+@write_tool
 def librenms_ack_alert(alert_id: int, note: str = "") -> dict[str, Any]:
     """Acknowledge an alert by ID.
 
@@ -285,7 +288,7 @@ def librenms_ack_alert(alert_id: int, note: str = "") -> dict[str, Any]:
 # ── Alert rule tools ─────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def librenms_list_alert_rules() -> list[dict[str, Any]]:
     """List all alert rules.
 
@@ -309,7 +312,7 @@ def librenms_list_alert_rules() -> list[dict[str, Any]]:
 # ── Alert log tools ──────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def librenms_alert_log(
     device: str,
     start_time: str | None = None,
@@ -357,7 +360,7 @@ def librenms_alert_log(
 # ── Sensor tools ─────────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def librenms_list_sensors(device: str | None = None) -> list[dict[str, Any]]:
     """List sensors, optionally filtered by device.
 
@@ -389,7 +392,7 @@ def librenms_list_sensors(device: str | None = None) -> list[dict[str, Any]]:
     ]
 
 
-@mcp.tool
+@read_tool
 def librenms_device_health(
     device: str, health_type: str | None = None
 ) -> list[dict[str, Any]]:
@@ -414,7 +417,7 @@ def librenms_device_health(
 # ── Port tools ───────────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def librenms_list_ports(device: str) -> list[dict[str, Any]]:
     """List ports/interfaces for a device.
 
@@ -440,7 +443,7 @@ def librenms_list_ports(device: str) -> list[dict[str, Any]]:
     ]
 
 
-@mcp.tool
+@read_tool
 def librenms_search_ports(search: str) -> list[dict[str, Any]]:
     """Search for ports by name, alias, or description.
 
@@ -464,7 +467,7 @@ def librenms_search_ports(search: str) -> list[dict[str, Any]]:
     ]
 
 
-@mcp.tool
+@read_tool
 def librenms_port_by_mac(mac: str) -> list[dict[str, Any]]:
     """Find port(s) associated with a MAC address.
 
@@ -481,7 +484,7 @@ def librenms_port_by_mac(mac: str) -> list[dict[str, Any]]:
 # ── ARP tools ────────────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def librenms_arp_lookup(
     query: str, device: str | None = None
 ) -> list[dict[str, Any]]:
@@ -508,7 +511,7 @@ def librenms_arp_lookup(
 # ── FDB tools ────────────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def librenms_fdb(device: str) -> list[dict[str, Any]]:
     """Get FDB (forwarding database / MAC table) for a device.
 
@@ -534,7 +537,7 @@ def librenms_fdb(device: str) -> list[dict[str, Any]]:
 # ── Inventory tools ──────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def librenms_inventory(
     device: str, physical_class: str | None = None
 ) -> list[dict[str, Any]]:
@@ -572,7 +575,7 @@ def librenms_inventory(
 # ── IP address tools ────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def librenms_device_ips(device: str) -> list[dict[str, Any]]:
     """Get all IP addresses assigned to a device.
 
@@ -677,10 +680,9 @@ def main() -> None:
     _client = LibreNMSClient(librenms_url, librenms_token)
 
     read_only = args.read_only if args.read_only is not None else settings.librenms_read_only
-    if read_only and WRITE_TOOLS:
-        for name in WRITE_TOOLS:
-            mcp.remove_tool(name)
-        logger.info("Read-only mode: %d write tools removed", len(WRITE_TOOLS))
+    if read_only:
+        removed = remove_non_read_tools(mcp)
+        logger.info("Read-only mode: %d non-read tools removed", removed)
 
     try:
         if transport == "stdio":
