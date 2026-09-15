@@ -118,30 +118,30 @@ clr-librenms-mcp --transport http --host 0.0.0.0 --port 8000
 
 | Tool | Description |
 |------|-------------|
-| `librenms_system` | Get LibreNMS version and system information |
+| `system` | Get LibreNMS version and system information |
 
 ### Devices
 
 | Tool | Description | Parameters |
 |------|-------------|------------|
-| `librenms_list_devices` | List all monitored devices | `device_type?`, `query?` |
-| `librenms_get_device` | Get full detail for a single device | `device` |
-| `librenms_down_devices` | List all devices currently down | — |
-| `librenms_device_summary` | Aggregate status summary (up/down/disabled) | — |
-| `librenms_device_availability` | Availability percentages (24h, 7d, 30d, 365d) | `device` |
-| `librenms_device_outages` | Outage history for a device | `device` |
-| `librenms_device_ips` | IP addresses assigned to a device | `device` |
-| `librenms_inventory` | Hardware inventory (chassis, modules, PSUs) | `device`, `physical_class?` |
+| `list_devices` | List all monitored devices | `device_type?`, `query?` |
+| `get_device` | Get full detail for a single device | `device` |
+| `down_devices` | List all devices currently down | — |
+| `device_summary` | Aggregate status summary (up/down/disabled) | — |
+| `device_availability` | Availability percentages (24h, 7d, 30d, 365d) | `device` |
+| `device_outages` | Outage history for a device | `device` |
+| `device_ips` | IP addresses assigned to a device | `device` |
+| `inventory` | Hardware inventory (chassis, modules, PSUs) | `device`, `physical_class?` |
 
 ### Alerts
 
 | Tool | Description | Parameters |
 |------|-------------|------------|
-| `librenms_list_alerts` | List alerts with optional filters | `state?`, `severity?` |
-| `librenms_get_alert` | Get full detail for a single alert | `alert_id` |
-| `librenms_alert_count` | Alert count by state and severity | — |
-| `librenms_ack_alert` | Acknowledge an alert | `alert_id`, `note?` |
-| `librenms_list_alert_rules` | List all alert rules | — |
+| `list_alerts` | List alerts with optional filters | `state?`, `severity?` |
+| `get_alert` | Get full detail for a single alert | `alert_id` |
+| `alert_count` | Alert count by state and severity | — |
+| `ack_alert` | Acknowledge an alert | `alert_id`, `note?` |
+| `list_alert_rules` | List all alert rules | — |
 
 **Alert filter values:**
 
@@ -154,8 +154,8 @@ clr-librenms-mcp --transport http --host 0.0.0.0 --port 8000
 
 | Tool | Description | Parameters |
 |------|-------------|------------|
-| `librenms_list_sensors` | List all sensors or filter by device | `device?` |
-| `librenms_device_health` | Health sensors for a device by type | `device`, `health_type?` |
+| `list_sensors` | List all sensors or filter by device | `device?` |
+| `device_health` | Health sensors for a device by type | `device`, `health_type?` |
 
 **Health types:** `temperature`, `voltage`, `fanspeed`, `power`, `humidity`, `state`, and more.
 
@@ -163,16 +163,16 @@ clr-librenms-mcp --transport http --host 0.0.0.0 --port 8000
 
 | Tool | Description | Parameters |
 |------|-------------|------------|
-| `librenms_list_ports` | List ports/interfaces for a device | `device` |
-| `librenms_search_ports` | Search ports by name, alias, or description | `search` |
-| `librenms_port_by_mac` | Find port(s) by MAC address | `mac` |
+| `list_ports` | List ports/interfaces for a device | `device` |
+| `search_ports` | Search ports by name, alias, or description | `search` |
+| `port_by_mac` | Find port(s) by MAC address | `mac` |
 
 ### Network Lookups
 
 | Tool | Description | Parameters |
 |------|-------------|------------|
-| `librenms_arp_lookup` | ARP lookup by IP, MAC, or CIDR | `query`, `device?` |
-| `librenms_fdb` | MAC/FDB table for a device | `device` |
+| `arp_lookup` | ARP lookup by IP, MAC, or CIDR | `query`, `device?` |
+| `fdb` | MAC/FDB table for a device | `device` |
 
 ## Example Usage
 
@@ -189,14 +189,14 @@ Once connected, you can ask your AI assistant things like:
 
 ## Safety
 
-All tools are **read-only** except `librenms_ack_alert`, which is a non-destructive write operation — it marks an alert as acknowledged but does not modify device configuration or monitoring state.
+All tools are **read-only** except `ack_alert`, which is a non-destructive write operation — it marks an alert as acknowledged but does not modify device configuration or monitoring state.
 
 ## Technical Notes
 
 - **Auth:** Token-based via X-Auth-Token header (generate tokens in LibreNMS under API Settings)
 - **API version:** Uses LibreNMS REST API v0
 - **Device parameter:** Most tools accept hostname, IP address, or device_id interchangeably
-- **Sensors:** Use `librenms_device_health` with `health_type` for filtered sensor views, or `librenms_list_sensors` for all sensors across all devices
+- **Sensors:** Use `device_health` with `health_type` for filtered sensor views, or `list_sensors` for all sensors across all devices
 
 ## Development
 

@@ -27,7 +27,7 @@ from clr_librenms_mcp.annotations import read_tool, remove_non_read_tools, write
 
 
 @read_tool
-def librenms_system() -> dict[str, Any]:
+def system() -> dict[str, Any]:
     """Get LibreNMS system information.
 
     Returns:
@@ -44,7 +44,7 @@ def librenms_system() -> dict[str, Any]:
 
 
 @read_tool
-def librenms_list_devices(
+def list_devices(
     device_type: str | None = None,
     query: str | None = None,
 ) -> list[dict[str, Any]]:
@@ -84,7 +84,7 @@ def librenms_list_devices(
 
 
 @read_tool
-def librenms_get_device(device: str) -> dict[str, Any]:
+def get_device(device: str) -> dict[str, Any]:
     """Get full detail for a single device.
 
     Args:
@@ -99,7 +99,7 @@ def librenms_get_device(device: str) -> dict[str, Any]:
 
 
 @read_tool
-def librenms_device_availability(device: str) -> list[dict[str, Any]]:
+def device_availability(device: str) -> list[dict[str, Any]]:
     """Get device availability percentages.
 
     Args:
@@ -113,7 +113,7 @@ def librenms_device_availability(device: str) -> list[dict[str, Any]]:
 
 
 @read_tool
-def librenms_device_outages(device: str) -> list[dict[str, Any]]:
+def device_outages(device: str) -> list[dict[str, Any]]:
     """Get device outage history.
 
     Args:
@@ -127,7 +127,7 @@ def librenms_device_outages(device: str) -> list[dict[str, Any]]:
 
 
 @read_tool
-def librenms_down_devices() -> list[dict[str, Any]]:
+def down_devices() -> list[dict[str, Any]]:
     """List all devices that are currently down.
 
     Returns:
@@ -149,7 +149,7 @@ def librenms_down_devices() -> list[dict[str, Any]]:
 
 
 @read_tool
-def librenms_device_summary() -> dict[str, Any]:
+def device_summary() -> dict[str, Any]:
     """Get aggregate device status summary — count by status.
 
     Returns:
@@ -177,7 +177,7 @@ def librenms_device_summary() -> dict[str, Any]:
 
 
 @read_tool
-def librenms_list_alerts(
+def list_alerts(
     state: str | None = None,
     severity: str | None = None,
     alert_rule: int | None = None,
@@ -222,7 +222,7 @@ def librenms_list_alerts(
 
 
 @read_tool
-def librenms_get_alert(alert_id: int) -> dict[str, Any]:
+def get_alert(alert_id: int) -> dict[str, Any]:
     """Get full detail for a single alert.
 
     Args:
@@ -237,7 +237,7 @@ def librenms_get_alert(alert_id: int) -> dict[str, Any]:
 
 
 @read_tool
-def librenms_alert_count() -> dict[str, Any]:
+def alert_count() -> dict[str, Any]:
     """Get alert count aggregated by state and severity.
 
     Returns:
@@ -265,7 +265,7 @@ def librenms_alert_count() -> dict[str, Any]:
 
 
 @write_tool
-def librenms_ack_alert(alert_id: int, note: str = "") -> dict[str, Any]:
+def ack_alert(alert_id: int, note: str = "") -> dict[str, Any]:
     """Acknowledge an alert by ID.
 
     This is a non-destructive write operation — it marks the alert as
@@ -289,7 +289,7 @@ def librenms_ack_alert(alert_id: int, note: str = "") -> dict[str, Any]:
 
 
 @read_tool
-def librenms_list_alert_rules() -> list[dict[str, Any]]:
+def list_alert_rules() -> list[dict[str, Any]]:
     """List all alert rules.
 
     Returns:
@@ -313,7 +313,7 @@ def librenms_list_alert_rules() -> list[dict[str, Any]]:
 
 
 @read_tool
-def librenms_alert_log(
+def alert_log(
     device: str,
     start_time: str | None = None,
     end_time: str | None = None,
@@ -361,7 +361,7 @@ def librenms_alert_log(
 
 
 @read_tool
-def librenms_list_sensors(device: str | None = None) -> list[dict[str, Any]]:
+def list_sensors(device: str | None = None) -> list[dict[str, Any]]:
     """List sensors, optionally filtered by device.
 
     Args:
@@ -393,7 +393,7 @@ def librenms_list_sensors(device: str | None = None) -> list[dict[str, Any]]:
 
 
 @read_tool
-def librenms_device_health(
+def device_health(
     device: str, health_type: str | None = None
 ) -> list[dict[str, Any]]:
     """Get health sensors for a device.
@@ -418,7 +418,7 @@ def librenms_device_health(
 
 
 @read_tool
-def librenms_list_ports(device: str) -> list[dict[str, Any]]:
+def list_ports(device: str) -> list[dict[str, Any]]:
     """List ports/interfaces for a device.
 
     Args:
@@ -444,7 +444,7 @@ def librenms_list_ports(device: str) -> list[dict[str, Any]]:
 
 
 @read_tool
-def librenms_search_ports(search: str) -> list[dict[str, Any]]:
+def search_ports(search: str) -> list[dict[str, Any]]:
     """Search for ports by name, alias, or description.
 
     Args:
@@ -468,7 +468,7 @@ def librenms_search_ports(search: str) -> list[dict[str, Any]]:
 
 
 @read_tool
-def librenms_port_by_mac(mac: str) -> list[dict[str, Any]]:
+def port_by_mac(mac: str) -> list[dict[str, Any]]:
     """Find port(s) associated with a MAC address.
 
     Args:
@@ -485,7 +485,7 @@ def librenms_port_by_mac(mac: str) -> list[dict[str, Any]]:
 
 
 @read_tool
-def librenms_arp_lookup(
+def arp_lookup(
     query: str, device: str | None = None
 ) -> list[dict[str, Any]]:
     """Look up ARP entries by IP, MAC, or CIDR subnet.
@@ -512,7 +512,7 @@ def librenms_arp_lookup(
 
 
 @read_tool
-def librenms_fdb(device: str) -> list[dict[str, Any]]:
+def fdb(device: str) -> list[dict[str, Any]]:
     """Get FDB (forwarding database / MAC table) for a device.
 
     Args:
@@ -538,7 +538,7 @@ def librenms_fdb(device: str) -> list[dict[str, Any]]:
 
 
 @read_tool
-def librenms_inventory(
+def inventory(
     device: str, physical_class: str | None = None
 ) -> list[dict[str, Any]]:
     """Get device hardware inventory.
@@ -576,7 +576,7 @@ def librenms_inventory(
 
 
 @read_tool
-def librenms_device_ips(device: str) -> list[dict[str, Any]]:
+def device_ips(device: str) -> list[dict[str, Any]]:
     """Get all IP addresses assigned to a device.
 
     Args:
